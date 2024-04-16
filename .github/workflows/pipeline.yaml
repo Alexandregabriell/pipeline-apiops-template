@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - hml
+      - dev
+      
+env:
+  SENSEDIA_CLI_TOKEN: ${{ secrets.SENSEDIA_CLI_TOKEN }}
+  SENSEDIA_CLI_MANAGER_URL: 'test'
+
+jobs:
+  build:
+    name: Build Stage
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup cli
+        run: |
+          mkdir -p build-artifact
+          cd build-artifact
+          wget -O ssd https://github.com/thiagoyeds/pipeline-apiops-template/raw/dev/ssd
+          chmod +x ssd
+          ./ssd --help
+
+      - name: save build artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: build-artifact
+          path: build-artifact
+  deploy:
+    name: Deploy Stage
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: download build artifact
+        uses: actions/download-artifact@master
+        with:
+          name: build-artifact
+          path: build-artifact
+
+      - name: run ssd --help
+        run: | 
+          chmod +x build-artifact/ssd
+          ./build-artifact/ssd --help
+
+      - name: load env vars
+        run: |
+          echo "{\"default\":{\"output\": \"yaml\",\"token\": \"${SENSEDIA_CLI_TOKEN}\",\"url\": \"$SENSEDIA_CLI_MANAGER_URL\"}}" > config.json
+          cat config.json

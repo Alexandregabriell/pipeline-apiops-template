@@ -17,7 +17,9 @@ jobs:
       
       - name: List Modified YAML Files
         id: list-yaml-files
-        run: echo "::set-output name=modified_yaml_files::$(git diff --name-only -- '*.yaml' '*.yml' ${{ github.event.before }} ${{ github.sha }})"
+        run: |
+          MODIFIED_YAML_FILES=$(git diff --name-only -- '*.yaml' '*.yml' ${{ github.event.before }} ${{ github.sha }})
+          echo "::set-env name=MODIFIED_YAML_FILES::$MODIFIED_YAML_FILES"
 
       - name: Install yamllint
         run: |
@@ -29,7 +31,7 @@ jobs:
 
       - name: Test and Lint Modified YAML Files
         run: |
-          modified_yaml_files="${{ steps.list-yaml-files.outputs.modified_yaml_files }}"
+          modified_yaml_files="${MODIFIED_YAML_FILES}"
           for file in $modified_yaml_files; do
             echo "Testing and linting YAML file: $file"
             yamllint $file

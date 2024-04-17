@@ -26,7 +26,6 @@ jobs:
 
       - name: Lint Arquivos YAML Modificados
         run: |
-          run: |
           modified_yaml_files="${{ steps.list-yaml-files.outputs.stdout }}"
           echo "Arquivos YAML Modificados: $modified_yaml_files"
           cat $modified_yaml_files

@@ -14,6 +14,27 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      
+      - name: List Modified YAML Files
+        id: list-yaml-files
+        run: echo "::set-output name=modified_yaml_files::$(git diff --name-only -- '*.yaml' '*.yml' ${{ github.event.before }} ${{ github.sha }})"
+
+      - name: Install yamllint
+        run: |
+          pip install --upgrade pip
+          pip install yamllint
+
+      - name: Install yq
+        run: sudo apt-get install yq
+
+      - name: Test and Lint Modified YAML Files
+        run: |
+          modified_yaml_files="${{ steps.list-yaml-files.outputs.modified_yaml_files }}"
+          for file in $modified_yaml_files; do
+            echo "Testing and linting YAML file: $file"
+            yamllint $file
+            yq eval '.' $file > /dev/null
+          done
 
       - name: setup cli
         run: |

@@ -19,15 +19,18 @@ jobs:
         id: list-yaml-files
         run: git diff --name-only -- '**/*.yaml' '**/*.yml' ${{ github.event.before }} ${{ github.sha }}
 
-      - name: Instalar yq
-        run: pip install yq
-
-      - name: Imprimir Conteúdo dos Arquivos YAML Modificados
+      - name: Instalar yamllint
         run: |
-          while IFS= read -r file; do
-            echo "Conteúdo do arquivo YAML: $file"
-            cat $file
-          done <<< "$(echo "${{ steps.list-yaml-files.outputs.stdout }}")"
+          pip install --upgrade pip
+          pip install yamllint
+
+      - name: Lint Arquivos YAML Modificados
+        run: |
+          modified_yaml_files="${{ steps.list-yaml-files.outputs.stdout }}"
+          for file in $modified_yaml_files; do
+            echo "Linting do arquivo YAML: $file"
+            yamllint $file
+          done
 
       - name: setup cli
         run: |

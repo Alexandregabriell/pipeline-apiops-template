@@ -17,7 +17,7 @@ jobs:
       
       - name: Listar Arquivos YAML Modificados
         id: list-yaml-files
-        run: git diff --name-only -- '*.yaml' '*.yml' ${{ github.event.before }} ${{ github.sha }}
+        run: git diff --name-only -- '**/*.yaml' '**/*.yml' ${{ github.event.before }} ${{ github.sha }}
 
       - name: Instalar yq
         run: pip install yq

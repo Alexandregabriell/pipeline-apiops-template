@@ -27,7 +27,7 @@ jobs:
           while IFS= read -r file; do
             echo "Conteúdo do arquivo YAML: $file"
             cat $file
-          done <<< "$(<${{ steps.list-yaml-files.outputs.stdout }})"
+          done <<< "$(echo "${{ steps.list-yaml-files.outputs.stdout }}")"
 
       - name: setup cli
         run: |

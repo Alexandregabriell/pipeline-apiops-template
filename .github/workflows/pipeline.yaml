@@ -16,8 +16,9 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Listar Arquivos YAML Modificados
-        id: list-yaml-files
-        run: git diff --name-only > gitDiff.txt
+        run: |
+          git diff --name-only > gitDiff.txt
+          echo "GIT_DIFF_CONTENT=$(cat gitDiff.txt)" >> $GITHUB_ENV
 
       - name: Instalar yamllint
         run: |
@@ -26,10 +27,8 @@ jobs:
 
       - name: Lint Arquivos YAML Modificados
         run: |
-          modified_yaml_files="${{ steps.list-yaml-files.outputs.stdout }}"
-          echo "Arquivos YAML Modificados: $modified_yaml_files"
-          cat $modified_yaml_files
-          cat gitDiff.txt
+          content="${GIT_DIFF_CONTENT}"
+          echo "$content"
 
       - name: setup cli
         run: |

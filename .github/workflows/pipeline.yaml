@@ -18,6 +18,7 @@ jobs:
       - name: Listar Arquivos YAML Modificados
         run: |
           git diff --name-only > gitDiff.txt
+          cat gitDiff.txt
           echo "GIT_DIFF_CONTENT=$(cat gitDiff.txt)" >> $GITHUB_ENV
 
       - name: Instalar yamllint

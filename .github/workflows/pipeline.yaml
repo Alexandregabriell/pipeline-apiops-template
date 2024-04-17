@@ -25,7 +25,7 @@ jobs:
           pip install yamllint
 
       - name: Install yq
-        run: sudo apt-get install yq
+        run: pip install yq
 
       - name: Test and Lint Modified YAML Files
         run: |

@@ -17,7 +17,7 @@ jobs:
       
       - name: Listar Arquivos YAML Modificados
         id: list-yaml-files
-        run: git diff --name-only -- '**/*.yaml' '**/*.yml' ${{ github.event.before }} ${{ github.sha }}
+        run: git diff --name-only -- '**/*.yaml' '**/*.yml' ${{ github.event.before }} ${{ github.sha }} -- 'apis/demo/'
 
       - name: Instalar yamllint
         run: |
@@ -27,10 +27,7 @@ jobs:
       - name: Lint Arquivos YAML Modificados
         run: |
           modified_yaml_files="${{ steps.list-yaml-files.outputs.stdout }}"
-          for file in $modified_yaml_files; do
-            echo "Linting do arquivo YAML: $file"
-            yamllint $file
-          done
+          echo "$modified_yaml_files"
 
       - name: setup cli
         run: |

@@ -2,7 +2,7 @@ apiVersion:api-management.sensedia.com/v1
 kind:RestAPI
 spec:
   # Campos de identificação
-  name:cli-swapi-poc2
+  name: cli-swapi-poc2
   version: 1.0.0
   basePath: /star-wars/v1
   stageRef:

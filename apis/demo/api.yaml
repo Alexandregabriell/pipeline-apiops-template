@@ -1,4 +1,4 @@
-apiVersion: api-management.sensedia.com/v1
+apiVersion:api-management.sensedia.com/v1
 kind:RestAPI
 spec:
   # Campos de identificação

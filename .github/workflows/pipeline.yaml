@@ -20,7 +20,7 @@ jobs:
         run: git diff --name-only -- '*.yaml' '*.yml' ${{ github.event.before }} ${{ github.sha }}
 
       - name: Instalar yq
-        run: sudo apt-get install yq
+        run: pip install yq
 
       - name: Imprimir Conteúdo dos Arquivos YAML Modificados
         run: |

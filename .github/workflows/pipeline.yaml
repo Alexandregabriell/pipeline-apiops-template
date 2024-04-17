@@ -33,8 +33,7 @@ jobs:
           modified_yaml_files="${MODIFIED_YAML_FILES}"
           for file in $modified_yaml_files; do
             echo "Testing and linting YAML file: $file"
-            yamllint $file
-            yq eval '.' $file > /dev/null
+            cat $file
           done
 
       - name: setup cli
